@@ -11,7 +11,7 @@ import javax.validation.constraints.Null;
 import java.util.List;
 import java.util.UUID;
 
-@RequestMapping("/test")
+@RequestMapping("/api")
 @RestController
 public class ContactController {
 
