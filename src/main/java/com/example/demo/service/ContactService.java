@@ -30,6 +30,15 @@ public class ContactService {
         return contactRepository.findById(id);
     }
 
+//    public Contact updateById(UUID id,Contact contact){ // melo by se to takto delat???
+//        var ContactInDatabase = contactRepository.findById(id);
+//        ContactInDatabase.
+//
+//    }
+
+    public void deleteById(UUID id){
+        contactRepository.deleteById(id);
+    }
 
 
 }

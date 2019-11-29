@@ -25,4 +25,9 @@ public class Contact {
         this.name="";
         this.number ="";
     }
+
+//    public void copyAllAttributesWithoutId(Contact contact){
+//        this.name = contact.getName();
+//        this.number = contact.getNumber();
+//    }
 }

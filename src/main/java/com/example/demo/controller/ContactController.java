@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Null;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,13 +19,13 @@ public class ContactController {
     ContactService contactService;
 
     @GetMapping
-    public List<Contact> getAllContacts(){
-        return contactService.getAllContacts();
+    public ResponseEntity<List<Contact>> getAllContacts(){
+        return new ResponseEntity<>(contactService.getAllContacts(), HttpStatus.ACCEPTED);
     }
 
     @PostMapping
     public ResponseEntity<Contact> createContact(@RequestBody Contact contact){
-        return new ResponseEntity<>(contactService.createContact(contact), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(contactService.createContact(contact), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/{id}")
@@ -34,6 +35,12 @@ public class ContactController {
             return new ResponseEntity<>(temp.get(),HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>(temp.orElse(null),HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Null> deleteById(@PathVariable UUID id){
+        contactService.deleteById(id);
+        return new ResponseEntity<>(null,HttpStatus.ACCEPTED);
     }
 
 
