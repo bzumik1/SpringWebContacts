@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ContactService {
@@ -22,6 +24,10 @@ public class ContactService {
         var temp = new ArrayList<Contact>();
         contactRepository.findAll().forEach(c -> temp.add(c));
         return temp;
+    }
+
+    public Optional<Contact> getContactById(UUID id){
+        return contactRepository.findById(id);
     }
 
 
