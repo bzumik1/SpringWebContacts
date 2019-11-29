@@ -5,6 +5,9 @@ import com.example.demo.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ContactService {
 
@@ -15,7 +18,12 @@ public class ContactService {
         return contactRepository.save(contact);
     }
 
-    public String getContact(){
-        return "ContactServiceHelloWorld";
+    public List<Contact> getAllContacts(){
+        var temp = new ArrayList<Contact>();
+        contactRepository.findAll().forEach(c -> temp.add(c));
+        return temp;
     }
+
+
+
 }
