@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Contact;
 import com.example.demo.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +22,8 @@ public class ContactController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Contact>> getAllContacts(){
-        return new ResponseEntity<>(contactService.getAllContacts(), HttpStatus.ACCEPTED);
+    public ResponseEntity<List<Contact>> getAllContacts(Pageable pageable){
+        return new ResponseEntity<>(contactService.getAllContacts(pageable), HttpStatus.OK);
     }
 
     @PostMapping
@@ -37,9 +38,9 @@ public class ContactController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Null> deleteById(@PathVariable UUID id){
-        contactService.deleteById(id);
-        return new ResponseEntity<>(null,HttpStatus.OK);
+    public ResponseEntity<Contact> deleteById(@PathVariable UUID id){
+        var deletedData = contactService.deleteById(id);
+        return deletedData.map(contact -> new ResponseEntity<>(deletedData.get(),HttpStatus.OK)).orElseGet(() ->new ResponseEntity<>(null,HttpStatus.NOT_FOUND));
     }
 
     @PutMapping(path ={"/{id}"})

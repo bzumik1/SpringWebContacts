@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @Entity //nova tabulka v databazi
 @Data
+//@NoArgsConstructor
 public class Contact {
     @GeneratedValue(strategy = GenerationType.AUTO) //strategy = GenerationType.IDENTITY) toto pro integer
     @Id

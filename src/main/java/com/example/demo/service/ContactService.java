@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.model.Contact;
 import com.example.demo.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,9 +23,10 @@ public class ContactService {
         return contactRepository.save(contact);
     }
 
-    public List<Contact> getAllContacts(){
+
+    public List<Contact> getAllContacts(Pageable pageable){
         var temp = new ArrayList<Contact>();
-        contactRepository.findAll().forEach(temp::add);
+        contactRepository.findAll(pageable).forEach(temp::add);
         return temp;
     }
 
@@ -43,8 +45,12 @@ public class ContactService {
         return dataInDatabase;
     }
 
-    public void deleteById(UUID id){
-        contactRepository.deleteById(id);
+    public Optional<Contact> deleteById(UUID id){
+        var dataToDelete = contactRepository.findById(id);
+        if (dataToDelete.isPresent()){
+            contactRepository.deleteById(id);
+        }
+        return dataToDelete;
     }
 
 
