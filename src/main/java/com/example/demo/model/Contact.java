@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 @Entity //nova tabulka v databazi
-@Value
+@Data
 public class Contact {
     @GeneratedValue(strategy = GenerationType.AUTO) //strategy = GenerationType.IDENTITY) toto pro integer
     @Id
@@ -26,8 +27,8 @@ public class Contact {
         this.number ="";
     }
 
-//    public void copyAllAttributesWithoutId(Contact contact){
-//        this.name = contact.getName();
-//        this.number = contact.getNumber();
-//    }
+   public void copyAllAttributesWithoutId(Contact contact){
+        this.name = contact.getName();
+        this.number = contact.getNumber();
+   }
 }

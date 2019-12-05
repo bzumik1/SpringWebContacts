@@ -32,15 +32,27 @@ public class ContactController {
     public ResponseEntity<Contact> getContactById(@PathVariable UUID id){
         var temp = contactService.getContactById(id);
         if(temp.isPresent()){
-            return new ResponseEntity<>(temp.get(),HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(temp.get(),HttpStatus.OK);
         }
-        return new ResponseEntity<>(temp.orElse(null),HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(temp.orElse(null),HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Null> deleteById(@PathVariable UUID id){
         contactService.deleteById(id);
-        return new ResponseEntity<>(null,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(null,HttpStatus.OK);
+    }
+
+    @PutMapping(path ={"/{id}"})
+    public ResponseEntity<Contact> updateById(@PathVariable UUID id, @RequestBody Contact contact){
+        var updatedData = contactService.updateById(id,contact);
+        var updatedContact = updatedData.get();
+        if(updatedData.isPresent()){
+            return new ResponseEntity<>(updatedContact,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(updatedContact,HttpStatus.NOT_FOUND);
+        }
     }
 
 

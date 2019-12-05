@@ -30,11 +30,16 @@ public class ContactService {
         return contactRepository.findById(id);
     }
 
-//    public Contact updateById(UUID id,Contact contact){ // melo by se to takto delat???
-//        var ContactInDatabase = contactRepository.findById(id);
-//        ContactInDatabase.
-//
-//    }
+    public Optional<Contact> updateById(UUID id,Contact contact){ // melo by se to takto delat???
+        var dataInDatabase = contactRepository.findById(id);
+        Contact contactInDatabase = null;
+        if(dataInDatabase.isPresent()){ //findById returns optional -> null or contact
+            contactInDatabase = dataInDatabase.get();
+            contactInDatabase.copyAllAttributesWithoutId(contact);
+            contactRepository.save(contactInDatabase);
+        }
+        return dataInDatabase;
+    }
 
     public void deleteById(UUID id){
         contactRepository.deleteById(id);
