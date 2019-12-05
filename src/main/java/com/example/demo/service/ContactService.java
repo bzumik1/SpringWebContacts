@@ -12,9 +12,11 @@ import java.util.UUID;
 
 @Service
 public class ContactService {
-
+    private final ContactRepository contactRepository;
     @Autowired
-    private ContactRepository contactRepository;
+    public ContactService(ContactRepository contactRepository) {
+        this.contactRepository = contactRepository;
+    }
 
     public Contact createContact(Contact contact){
         return contactRepository.save(contact);
@@ -22,7 +24,7 @@ public class ContactService {
 
     public List<Contact> getAllContacts(){
         var temp = new ArrayList<Contact>();
-        contactRepository.findAll().forEach(c -> temp.add(c));
+        contactRepository.findAll().forEach(temp::add);
         return temp;
     }
 
@@ -32,7 +34,7 @@ public class ContactService {
 
     public Optional<Contact> updateById(UUID id,Contact contact){ // melo by se to takto delat???
         var dataInDatabase = contactRepository.findById(id);
-        Contact contactInDatabase = null;
+        Contact contactInDatabase;
         if(dataInDatabase.isPresent()){ //findById returns optional -> null or contact
             contactInDatabase = dataInDatabase.get();
             contactInDatabase.copyAllAttributesWithoutId(contact);

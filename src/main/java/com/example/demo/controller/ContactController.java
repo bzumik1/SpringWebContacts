@@ -14,9 +14,11 @@ import java.util.UUID;
 @RequestMapping("/api")
 @RestController
 public class ContactController {
-
+    private final ContactService contactService;
     @Autowired
-    ContactService contactService;
+    public ContactController(ContactService contactService) {
+        this.contactService = contactService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Contact>> getAllContacts(){
@@ -31,10 +33,7 @@ public class ContactController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<Contact> getContactById(@PathVariable UUID id){
         var temp = contactService.getContactById(id);
-        if(temp.isPresent()){
-            return new ResponseEntity<>(temp.get(),HttpStatus.OK);
-        }
-        return new ResponseEntity<>(temp.orElse(null),HttpStatus.OK);
+        return temp.map(contact -> new ResponseEntity<>(contact, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(temp.orElse(null), HttpStatus.OK));
     }
 
     @DeleteMapping(path = "/{id}")
@@ -46,12 +45,13 @@ public class ContactController {
     @PutMapping(path ={"/{id}"})
     public ResponseEntity<Contact> updateById(@PathVariable UUID id, @RequestBody Contact contact){
         var updatedData = contactService.updateById(id,contact);
-        var updatedContact = updatedData.get();
+
         if(updatedData.isPresent()){
+            var updatedContact = updatedData.get();
             return new ResponseEntity<>(updatedContact,HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<>(updatedContact,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
         }
     }
 
